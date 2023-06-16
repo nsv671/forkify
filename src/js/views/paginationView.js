@@ -7,9 +7,8 @@ class PaginationView extends View {
   addHandlerClick(handler) {
     this._parentElement.addEventListener('click', function (e) {
       const btn = e.target.closest('.btn--inline');
-      console.log(btn);
-
       if (!btn) return;
+
       const goToPage = +btn.dataset.goto;
       handler(goToPage);
     });
@@ -20,10 +19,9 @@ class PaginationView extends View {
     const numberOfPages = Math.ceil(
       this._data.results.length / this._data.resultPerPage
     );
-    console.log(numberOfPages);
 
-    // page 1 and there is no other page
-    if (numberOfPages > 1 && currentPage === 1) {
+    // Page 1, and there are other pages
+    if (currentPage === 1 && numberOfPages > 1) {
       return `
             <button data-goto = ${
               currentPage + 1
@@ -37,7 +35,7 @@ class PaginationView extends View {
     }
 
     //Last page
-    if (currentPage === numberOfPages) {
+    if (currentPage === numberOfPages && numberOfPages > 1) {
       return `
             <button data-goto = ${
               currentPage - 1
@@ -72,7 +70,7 @@ class PaginationView extends View {
         `;
     }
 
-    //page 1 and there is other page
+    // Page 1, and there are NO other pages
     return '';
   }
 }

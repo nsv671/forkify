@@ -11,9 +11,9 @@ const timeout = function (second) {
   });
 };
 
-export const AJAX = async function (url, uploadData = false) {
+export const AJAX = async function (url, uploadData = undefined) {
   try {
-    const fetchpro = uploadData
+    const fetchPro = uploadData
       ? fetch(url, {
           method: 'POST',
           headers: {
@@ -23,12 +23,12 @@ export const AJAX = async function (url, uploadData = false) {
         })
       : fetch(url);
 
-    const response = await Promise.race([fetchpro, timeout(TIMEOUT_SEC)]);
+    const response = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+    const data = await response.json();
 
-    if (!response.ok) throw new Error(`${data.message}, ${response.status}`);
-    return response;
+    if (!response.ok) throw new Error(`${data.message} ${response.status}`);
+    return data;
   } catch (err) {
-    console.log(err);
     throw err;
   }
 };
